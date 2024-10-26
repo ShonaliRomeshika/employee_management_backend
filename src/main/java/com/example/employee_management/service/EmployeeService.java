@@ -1,4 +1,4 @@
-package com.example.employee_management.services;
+package com.example.employee_management.service;
 
 import com.example.employee_management.model.Employee;
 import com.example.employee_management.repository.EmployeeRepository;
@@ -20,15 +20,25 @@ public class EmployeeService {
     }
 
     public Employee saveEmployee(Employee employee) {
-        employee.setCode("EMP" + (employeeRepository.count() + 1));
         return employeeRepository.save(employee);
-    }
-
-    public void deleteEmployee(UUID id) {
-        employeeRepository.deleteById(id);
     }
 
     public Employee getEmployeeById(UUID id) {
         return employeeRepository.findById(id).orElseThrow();
+    }
+
+    public Employee updateEmployee(UUID id, Employee employee) {
+        Employee existingEmployee = getEmployeeById(id); // Find the existing employee
+        existingEmployee.setName(employee.getName());
+        existingEmployee.setCode(employee.getCode());
+        existingEmployee.setEmail(employee.getEmail());
+        existingEmployee.setSalary(employee.getSalary());
+        existingEmployee.setPosition(employee.getPosition());
+        existingEmployee.setJoiningDate(employee.getJoiningDate());
+        return employeeRepository.save(existingEmployee); // Save the updated employee
+    }
+
+    public void deleteEmployee(UUID id) {
+        employeeRepository.deleteById(id);
     }
 }
